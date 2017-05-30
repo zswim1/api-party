@@ -18,6 +18,7 @@ class Github extends Component {
     this.props.history.push(`/github/${this.state.username}`)
   }
 
+
   render() {
     return (
       <div className="github">
