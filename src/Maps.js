@@ -7,6 +7,7 @@ class Maps extends Component{
     state = {
         from: '',
         to: '',
+        trans: '',
     }
 
     handleFromChange = (ev) => {
@@ -20,9 +21,14 @@ class Maps extends Component{
         this.setState({to})
     }
 
+    handleTransportChange = (ev) => {
+        const trans = ev.currentTarget.value
+        this.setState({trans})
+    }
+
     handleSubmit = (ev) => {
         ev.preventDefault()
-        this.props.history.push(`/maps/${this.state.from}/${this.state.to}`)
+        this.props.history.push(`/maps/${this.state.from}/${this.state.to}/${this.state.trans}`)
     }
     render(){
         return(
@@ -44,6 +50,13 @@ class Maps extends Component{
                                     onChange={this.handleToChange}
                             />
                         </div>
+                        <div>
+                            <label>Transport type</label>
+                            <input type="text"
+                                    value={this.state.trans}
+                                    onChange={this.handleTransportChange}
+                            />
+                        </div>
                     </div>
                     <div>
                         <button type="submit">Calculate Distance</button>
@@ -53,7 +66,7 @@ class Maps extends Component{
                 <Route exact path='/maps' render={() => (
                 <h4>Please enter a location and destination</h4> 
                 )} />
-                <Route path='/maps/:from/:to' component={Distance} />
+                <Route path='/maps/:from/:to/:trans' component={Distance} />
             </div>
 
 

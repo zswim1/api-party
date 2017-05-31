@@ -9,6 +9,7 @@ class Distance extends Component{
             destination: '',
             distance: '',
             time: '',
+            transport: '',
         }
     }
 
@@ -25,7 +26,8 @@ class Distance extends Component{
 
     fetchUserData(props){
         const that = this;
-        fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${props.match.params.from}&destinations=${props.match.params.to}&key=AIzaSyDDubFxsIXeKVGX2UkgDS7tYKD13IH8PkM`)
+        console.log(that)
+        fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${props.match.params.from}&destinations=${props.match.params.to}&mode=${props.match.params.trans}&key=AIzaSyDDubFxsIXeKVGX2UkgDS7tYKD13IH8PkM`)
         .then(response => response.json())
         .then(fromAPI => {
             const data = {
@@ -33,16 +35,17 @@ class Distance extends Component{
                 destination: fromAPI.destination_addresses[0],
                 time: fromAPI.rows[0].elements[0].duration.text,
                 distance: fromAPI.rows[0].elements[0].distance.text,
+                transport: that.props.match.params.trans
             }
             that.setState({data})
         })
     }
 
     render(){
-        const { location, destination, distance, time} = this.state.data
+        const { location, destination, distance, time, transport} = this.state.data
         return(
             <div className= 'Maps distance'>
-                <label>{location} to {destination}</label>
+                <label>{transport} from {location} to {destination}</label>
                 <h3>Distance: {distance} </h3>
                 <h3>Time: {time}</h3>
             </div>
