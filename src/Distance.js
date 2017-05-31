@@ -5,34 +5,46 @@ class Distance extends Component{
     
     state = {
         data: {
-            'origin-addresses': '',
-            'destination-addresses': '',
-            elements: '',
+            location: '',
+            destination: '',
+            distance: '',
+            time: '',
         }
     }
 
-    constructor(props){
-        super(props)
-        this.fetchUserData(props)
+    componentWillMount = () => {
+        this.fetchUserData(this.props)
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const locationChanged = nextProps.location !== this.props.location;
+        if (locationChanged) {
+            this.fetchUserData(nextProps);
+        }
     }
 
     fetchUserData(props){
-        //fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${props.match.params.from}&destinations=${props.match.params.to}&key=AIzaSyDDubFxsIXeKVGX2UkgDS7tYKD13IH8PkM`)
-        fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Chicago,IL&destinations=Seattle,WA&key=AIzaSyDDubFxsIXeKVGX2UkgDS7tYKD13IH8PkM`)
+        const that = this;
+        fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${props.match.params.from}&destinations=${props.match.params.to}&key=AIzaSyDDubFxsIXeKVGX2UkgDS7tYKD13IH8PkM`)
         .then(response => response.json())
-        .then(data => this.setState = () => { 
-            data 
-            debugger
+        .then(fromAPI => {
+            const data = {
+                location: fromAPI.origin_addresses[0],
+                destination: fromAPI.destination_addresses[0],
+                time: fromAPI.rows[0].elements[0].duration.text,
+                distance: fromAPI.rows[0].elements[0].distance.text,
             }
-        )
-            
-        debugger
+            that.setState({data})
+        })
     }
 
     render(){
+        const { location, destination, distance, time} = this.state.data
         return(
-            <div>
-                <label htmlFor="">Distance: </label>
+            <div className= 'Maps distance'>
+                <label>{location} to {destination}</label>
+                <h3>Distance: {distance} </h3>
+                <h3>Time: {time}</h3>
             </div>
         )
     }
