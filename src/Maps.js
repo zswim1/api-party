@@ -22,13 +22,13 @@ class Maps extends Component{
     }
 
     handleTransportChange = (ev) => {
-        const trans = ev.currentTarget.value
+        const trans = ev.currentTarget.value.toLowerCase()
         this.setState({trans})
     }
 
     handleSubmit = (ev) => {
         ev.preventDefault()
-        this.props.history.push(`/maps/${this.state.from}/${this.state.to}/${this.state.trans}`)
+        this.props.history.push(`/maps/${this.state.from}/${this.state.to}/${this.state.trans.toLowerCase()}`)
     }
     render(){
         return(

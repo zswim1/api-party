@@ -45,7 +45,7 @@ class Distance extends Component{
         const { location, destination, distance, time, transport} = this.state.data
         return(
             <div className= 'Maps distance'>
-                <label>{transport} from {location} to {destination}</label>
+                <h3>{transport} from {location} to {destination}</h3>
                 <h3>Distance: {distance} </h3>
                 <h3>Time: {time}</h3>
             </div>
